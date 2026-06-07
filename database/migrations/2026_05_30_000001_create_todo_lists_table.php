@@ -10,6 +10,7 @@ class CreateTodoListsTable extends Migration
     {
         Schema::create('todo_lists', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->index();
             $table->string('listId'); // corresponds to the IndexedDB key (date like YYYYMMDD or custom id)
             $table->string('text')->nullable(); // custom list name (if applicable)
             $table->string('desc')->nullable(); 

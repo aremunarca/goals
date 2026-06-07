@@ -4,10 +4,10 @@ use App\Helpers\Api as ApiHelper;
 
 trait ApiController
 {
-    public function curlIntranet($user)
+    public function curlIntranet($token)
     {   
         $headers = [
-            'Authorization: Bearer ' .$user->token,
+            'Authorization: Bearer ' .$token,
             'Content-Type: application/json',
         ];
     

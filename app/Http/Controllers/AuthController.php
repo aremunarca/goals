@@ -69,15 +69,14 @@ class AuthController extends Controller
     }
 
 
-    public function loginByIntranet(Request $request,$user_id)
+    public function loginByIntranet(Request $request, $user_id, $token  )
     {
-        $user_intranet = UserIntranet::where('id',$user_id)->first();
         
-        $response = $this->curlIntranet($user_intranet);
+        $response = $this->curlIntranet($token);
         if(array_key_exists('user', $response)){
-            if($response['user']->id == $user_intranet->id) {
-                
-                $user = $this->storeUser($user_intranet);
+            if($response['user']->id == $user_id) {
+                \Log::info(serialize($response['user']));
+                $user = $this->storeUser($response['user']);
 
                 $token = $user->createToken($user->id)->plainTextToken;
 
@@ -107,7 +106,7 @@ class AuthController extends Controller
             $user->phone = $user_intranet->phone;
             $user->photo = $user_intranet->photo;
             $user->birthday = $user_intranet->birthday;
-            $user->password = $user_intranet->password;
+            $user->password = Hash::make('CLAVE_SECRETA');
             $user->user_intranet_id = $user_intranet->id;
             $user->save();
         }
